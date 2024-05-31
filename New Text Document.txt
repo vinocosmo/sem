@@ -465,28 +465,41 @@ Element deleted from queue is : 13
 Element deleted from queue is : 14 
 Element deleted from queue is : 15 
 Element deleted from queue is : 16 
-#include<bits/stdc++.h> 
-using namespace std; 
-int f=-1,r=-1; 
-#define max 100 
-int q[max]; 
-void enque(int num) 
-{ f=0; 
-r++; 
-q[r]=num; } 
-void deque1(int m) 
-{ for(int i=f;i<m;i++) 
-{ cout<<"Element deleted from queue is : "<<q[i]<<endl; q[i]=q[i+1]; } } 
-int main() 
-{ int n; 
-cin>>n; 
-for(int i=0;i<n;i++) 
-{ int num;
-cin>>num; 
-enque(num); } 
-int m; 
-cin>>m; 
-deque1(m); } 
+
+/// You are using GCC
+#include<bits/stdc++.h>
+using namespace std;
+int f=-1,r=-1;
+#define max 100
+int q[max];
+void enque(int num)
+{
+ f=0;
+ r++;
+ q[r]=num;
+}
+void deque1(int m)
+{
+ for(int i=f;i<m;i++)
+ {
+ cout<<"Element deleted from queue is : "<<q[i]<<endl;
+ q[i]=q[i+1];
+ }
+}
+int main()
+{
+ int n;
+ cin>>n;
+ for(int i=0;i<n;i++)
+ {
+ int num;
+ cin>>num;
+ enque(num);
+ }
+ int m;
+ cin>>m;
+ deque1(m);
+}
 13 Write a program to create a singly linked list and display the added elements.  Note : Insert the elements in the beginning of the list. 
 Input 1 : Output 1 : 
 5  
