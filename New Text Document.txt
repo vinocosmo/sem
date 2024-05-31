@@ -1,0 +1,854 @@
+1.Write a program to create a singly linked list and display the added elements. Input 1 : Output 1 : 
+5 3 4 21 232 89  
+3 4 21 232 89 
+#include<iostream> 
+using namespace std; 
+struct node  
+{int data; 
+ node* next;}; 
+void insertAtEnd(int data,struct node** head) 
+{ struct node*h=*head; 
+ struct node*newnode= new node(); 
+ newnode->data=data; 
+ newnode->next=NULL; 
+ if(*head==NULL) 
+ *head=newnode; 
+ else 
+ { while(h->next!=NULL) 
+ h=h->next; 
+ h->next=newnode; } } 
+void printNode(struct node*head) 
+{ struct node*h= head; 
+ while(h!=NULL) 
+ { cout<<h->data<<" "; 
+ h=h->next; } } 
+int main() 
+{ int num,data,i; 
+ cin>>num; 
+ struct node* head=NULL; 
+ for(i=0;i<num;i++) 
+ { cin>>data; 
+ insertAtEnd(data,&head); }
+ printNode(head); } 
+2. Problem Statement: 
+You are a developer tasked with creating a digital journal application where users can jot down  their thoughts and ideas. As part of this application, you decide to implement a feature that allows  users to navigate through their entries efficiently in both forward and backward directions. 
+Write a program to implement a doubly linked list for the same and display both directions. Sample test cases : 
+Input 1 : Output 1 : 
+5 Doubly linked list forwards: 3 35 24 13 21  21 13 24 35 3 Doubly linked list backwards: 21 13 24 35 3  #include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ node* left; 
+ node* right; }; 
+void insertAtBegin(int data, node** head, node** last) 
+{ struct node* h=*head; 
+ struct node* l=*last; 
+ struct node* newnode= new node(); 
+ newnode->data =data; 
+ newnode->left = NULL; 
+ newnode->right = NULL; 
+ if(*head==NULL) 
+ { *head= newnode; 
+ *last= newnode; } 
+else 
+ { newnode->right= h; 
+ h->left=newnode; 
+ *head= newnode; } } 
+void printNode(node* head, node *last) 
+{ node* h=head; 
+ node* l=last;
+ while(h!=l) 
+ { cout<<h->data <<" "; 
+ h=h->right; } 
+ cout<<h->data; } 
+void printNode1(node* head, node *last) { node* h=head; 
+ node* l=last; 
+ while(h!=l) 
+ { cout<<l->data <<" "; 
+ l=l->left; } 
+ cout<<h->data; } 
+int main() 
+{ int num,data,i; 
+ cin>>num; 
+ node* head=NULL; 
+ node* last=NULL; 
+ for(i=0;i<num;i++) 
+ { cin>>data; 
+ insertAtBegin(data,&head,&last); }  cout<<"Doubly linked list forwards: " ;  printNode(head,last); 
+ cout<<endl; 
+ cout<<"Doubly linked list backwards: " ;  printNode1(head,last); } 
+3. Write a program to implement stack using Array. Sample test cases : 
+Input 1 : Output 1 : 5 Stack elements 90 23 
+1 89 
+234 234 
+89 1
+23 90 
+#include<bits/stdc++.h> 
+using namespace std; 
+int Stack[100]; 
+int top=-1; 
+void push(int data)  
+{ top++; 
+Stack[top]=data; } 
+void display() 
+{ for(int i=top;i>=0;i--) 
+{ cout<<Stack[i]<<endl; } } 
+int main() 
+{ int n, num; 
+cin>>n; 
+for(int i=0;i<n;i++){ 
+cin>>num; 
+push(num); } 
+cout<<"Stack elements"<<endl; 
+display(); } 
+4.Write a program to implement stack using linked list.  Sample test cases : 
+Input 1 : Output 1 : 20 Stack elements Y 98 
+231 190 
+Y 231 
+190 20 
+Y 
+98 
+N 
+#include <bits/stdc++.h> 
+using namespace std;
+struct node 
+{ int data; 
+ node*next; }; 
+void push(struct node**head, int data) 
+{ struct node*newnode= new node(); 
+ newnode->data=data; 
+ newnode->next=NULL; 
+ newnode->next=*head; 
+ *head=newnode; } 
+void display(struct node*h) 
+{ while(h!=NULL) 
+ { cout<<h->data<<endl; 
+ h=h->next; } } 
+int main() 
+{ struct node *head=NULL; 
+ int n; 
+ char ch[1]; 
+ do{ 
+ cin>>n; 
+ push(&head,n); 
+ cin>>ch; } 
+ while(ch[0]=='Y'); 
+ cout<<"Stack elements\n"; 
+ display(head); } 
+5. Write a program to convert the given infix expression to postfix expression. Sample test cases : 
+Input 1 : Output 1 : 
+a+b*(c^d-e)^(f+g*h)-I abcd^e-fgh*+^*+i 
+Input 2 : Output 2 : 
+(a+b)*(c^d+e)^(f+g)*h ab+cd^e+fg+^h  
+#include<iostream> 
+#include<stack>
+#include<string> 
+using namespace std; 
+int pre(char ch){ 
+ if(ch=='^') 
+ return 3; 
+ else if(ch=='*'||ch=='/') 
+ return 2; 
+ else if(ch=='-'||ch=='+') 
+ return 1;\ 
+ else 
+ return 0; } 
+int main(){ 
+ string infix="",postfix=" "; 
+ stack<char>stack; 
+ cin>>infix; 
+ for(int i=0;i<infix.length();i++){ 
+ char ch=infix[i]; 
+ if(ch=='(') 
+ stack.push(ch); 
+ else if((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z'))  postfix+=ch; 
+ else if(ch==')'){ 
+ while(!stack.empty()&&stack.top()!='('){  postfix+=stack.top(); 
+ stack.pop(); } 
+ stack.pop(); } 
+else{ 
+ while(!stack.empty()&&(pre(ch)<=pre(stack.top()))){  postfix+=stack.top(); 
+ stack.pop(); } 
+ stack.push(ch); } } 
+ while(!stack.empty()){
+ postfix+=stack.top(); 
+ stack.pop(); } 
+ cout<<postfix; } 
+6.Emma is working on a program to manage a list of tasks for her daily schedule. She has  implemented a doubly linked list to keep track of her tasks efficiently. While organizing her tasks  for the day, she realizes that she needs to remove the last task from her list as it has been  completed. 
+Write a program to delete a node from the end of a doubly linked list. 
+Sample test cases : 
+Input 1 : Output 1 : 
+7 2 3 2 3 34 21 1  
+2 3 2 3 34 21 1 2 3 2 3  
+3 
+#include<bits/stdc++.h>
+using namespace std;
+struct node
+{
+int data;
+node *next,*prev;
+};
+node *head=NULL;
+void insert(int num)
+{
+node *newnode=new node();
+newnode->data=num;
+if(head==NULL)
+{
+head=newnode;
+}
+else
+{
+node *temp=head;
+while(temp->next!=0)
+{
+temp=temp->next;
+}
+newnode->prev=newnode;
+temp->next=newnode;
+}
+}
+void del()
+{
+node *temp=head;
+node *t1=temp->next;
+while(t1->next!=0)
+{
+t1=t1->next;
+temp=temp->next;
+}
+temp->next=NULL;
+}
+void display()
+{
+node *temp=head;
+while(temp!=0)
+{
+cout<<temp->data<<" ";
+temp=temp->next;
+}
+}
+int main()
+{
+int n;
+cin>>n;
+for(int i=0;i<n;i++)
+{
+int num;
+cin>>num;
+insert(num);
+}
+display();
+int n1;
+cin>>n1;
+for(int i=0;i<n1;i++)
+
+{
+del();
+}cout<<endl;
+display();
+}
+7. Write a program to insert and delete elements in the queue.  Output 1 : 
+Input 1 : 12 
+5 95 
+12 45 78 36 95 45 95
+#include<iostream> 
+using namespace std; 
+#define max 50 
+int queue[max]; 
+int front=-1; 
+int rear=-1; 
+void enqueue(int element, int n){  if(rear==n-1){ 
+ cout<<"queue is full"<<endl;  }else if(front==-1 && rear==-1){  front=rear=0; 
+ queue[rear]=element;  }else{ 
+ rear++; 
+ queue[rear]=element; } } void peek(){ 
+ if(front==-1 && rear==-1){  cout<<"Empty"<<endl;  }else{ 
+ cout<<queue[front]<<endl; } } void end(){ 
+ if(front==-1 && rear==-1){  cout<<"Empty"<<endl;  }else{ 
+ cout<<queue[rear]<<endl; } } void dequeue(){ 
+ if(front==-1 && rear==-1){  cout<<"Empty"<<endl;  }else if(front==rear){ 
+ front=rear=-1; 
+ }else{ 
+ front++; } }
+int main(){ 
+ int n; 
+ cin>>n; 
+ int element; 
+ for(int i=0;i<n;i++){ 
+ cin>>element; 
+ enqueue(element,n); } 
+ peek(); 
+ end(); 
+ dequeue(); 
+ peek(); 
+ end(); } 
+8.Packet Collision 
+A network user attempted to send multiple data packets with frame size 'k' at the same time. Due  to a network fault, all packets in each frame with a higher sequence number crashed. To resend  the packet, the sender must now find the maximum sequence number data packet in each frame  with size 'k'. 
+Sample test cases : 
+Input 1 : Output 1 : 
+6 34 34 12 23  
+21 34 5 6 12 23 Output 2 : 
+3 34 56 78 89 
+Input 2 : 
+5 
+12 34 56 78 89 
+2 
+#include<iostream> 
+#include<queue> 
+using namespace std; 
+int front=0,rear=0; 
+int main() 
+{ int num,i=0,j,max=-99; 
+ cin>>num; 
+ int queue[num];
+ for(i=0;i<num;i++) 
+ cin>>queue[rear++]; 
+ int key; 
+ cin>>key; 
+ for(i=front;i<=num-key;i++) 
+ { max=-999; 
+ for(j=i;j<i+key;j++) 
+ { if(max<queue[j]) 
+ max=queue[j]; } 
+ cout<<max<<" "; } } 
+9.Problem statement: 
+Implementation of binary search tree : 
+Write a Program to implement a binary search tree. 
+Sample test cases : 
+Input 1 : Output 1 : 
+6 Tree values are: 3 1 2 3 4 6 7 8 9 10  2 
+1 
+4 
+7 
+8 
+9 
+10 
+-1 
+Input 2 : Output 2 : 
+6 Tree values are: 
+3 1 2 3 6  
+2 
+1 
+-1
+#include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ node* left; 
+ node *right; }; 
+void insertNode(int data, node** root) { node* r=*root; 
+ node* newnode=new node();  newnode->data =data; 
+ newnode->left=NULL; 
+ newnode->right=NULL; 
+ if(*root==NULL) 
+ *root=newnode; 
+else 
+ { if(data < r->data) 
+ { if(r->left==NULL) 
+ r->left=newnode; 
+ insertNode(data , &r->left); }  else if(data > r->data) 
+ { if(r->right==NULL) 
+ r->right=newnode; 
+ insertNode(data, &r->right); } } } void printnode(node* root) 
+{ if(root!=NULL) 
+ { printnode(root->left); 
+ cout<<root->data<<" "; 
+ printnode(root->right); } } int main() 
+{ int data; 
+ node* root=NULL; 
+ while(1)
+ { cin>>data; 
+ if(data<0)  
+ break; 
+ insertNode(data,&root); } 
+ cout<<"Tree values are:"<<endl; 
+ printnode(root); } 
+10. Write a program to represent a graph using the adjacency list. 
+Sample test cases : 
+Input 1 : Output 1 : 
+6 0 
+4 1 -> 2 
+1 2 2 -> 1 -> 3 -> 4 
+2 3 3 -> 2 -> 4 
+3 4 4 -> 3 -> 2 
+2 4 5 
+Input 2 : Output 2 : 
+6 0 -> 5 
+5 1 -> 2 
+1 2 2 -> 1 -> 3 -> 4 
+2 3 3 -> 2 -> 4 
+3 4 4 -> 3 -> 2 
+2 4 5 -> 0 
+0 5 
+#include<iostream> 
+#include<vector> 
+using namespace std; 
+int main() 
+{ int v,e,i,j,v1,v2; 
+ cin>>v>>e; 
+ vector<int>ver[v]; 
+ for(i=0;i<e;i++)
+ { cin>>v1>>v2; 
+ ver[v1].push_back(v2); 
+ ver[v2].push_back(v1); } 
+ for(i=0;i<v;i++) 
+ { if(ver[i].size()==0) 
+ cout<<i; 
+ else 
+ { cout<<i<<" -> "; 
+ for(j=0;j<ver[i].size()-1;j++) 
+ cout<<ver[i][j]<<" -> "; 
+ cout<<ver[i][j]; } 
+ cout<<endl; } } 
+11. Subset Using Hashing 
+Problem Statement 
+Write a program to find whether the array is a subset or not using Hashing technique. Sample test cases : 
+Input 1 : Output 1: 
+6 Subset 
+4 
+11 1 13 21 3 7 
+11 3 7 1 
+Input 2 : Output 2 : 
+6 Not a subset 
+5 
+11 1 13 21 3 7 
+11 3 7 1 19 
+#include <bits/stdc++.h> 
+using namespace std; 
+int main() 
+{ int num1,num2,i,j,data,k,hashk,count=0; 
+ cin>>num1>>num2; 
+ vector<int> v1[num1];
+ vector<int> v2[num2]; 
+ for(i=0; i<num1; i++) 
+ { cin>>data; 
+ hashk=data%num1; 
+ v1[hashk].push_back(data); } 
+ for(i=0; i<num2; i++) 
+ { cin>>data; 
+ hashk=data%num2; 
+ v2[hashk].push_back(data); } 
+ for(i=0; i<num2;i++) 
+ { if(v2[i].size()>0) 
+ { for(j=0;j<v2[i].size();j++) 
+ { data=v2[i][j]; 
+ hashk=data%num1; 
+ for(k=0;k<v1[hashk].size();k++) 
+ { if(data==v1[hashk][k]) 
+ { count++; 
+ break; } } } } } 
+ if(num2==count) 
+ cout<<"subset"; 
+ else 
+ cout<<"Not a subset"; } 
+12. Write a program to insert and delete an element from the queue. Sample test cases : 
+Input 1 : 
+3 
+12 
+13 
+14 
+2 
+Output 1 : 
+Element deleted from queue is : 12
+Element deleted from queue is : 13 
+Input 2 : 
+5 
+13 
+14 
+15 
+16 
+17 
+4 
+Output 2 : 
+Element deleted from queue is : 13 
+Element deleted from queue is : 14 
+Element deleted from queue is : 15 
+Element deleted from queue is : 16 
+#include<bits/stdc++.h> 
+using namespace std; 
+int f=-1,r=-1; 
+#define max 100 
+int q[max]; 
+void enque(int num) 
+{ f=0; 
+r++; 
+q[r]=num; } 
+void deque1(int m) 
+{ for(int i=f;i<m;i++) 
+{ cout<<"Element deleted from queue is : "<<q[i]<<endl; q[i]=q[i+1]; } } 
+int main() 
+{ int n; 
+cin>>n; 
+for(int i=0;i<n;i++) 
+{ int num;
+cin>>num; 
+enque(num); } 
+int m; 
+cin>>m; 
+deque1(m); } 
+13 Write a program to create a singly linked list and display the added elements.  Note : Insert the elements in the beginning of the list. 
+Input 1 : Output 1 : 
+5  
+3 4 21 232 89 89 232 21 4 3  
+. 
+#include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ struct node* next; }; 
+void insertAtBegin(int data,struct node** head) 
+{ struct node* h=* head; 
+ struct node* newnode= new node(); 
+ newnode->data = data; 
+ newnode->next= NULL; 
+ if(*head==NULL) 
+ *head=newnode; 
+ else 
+ { newnode->next= h; 
+ *head= newnode; } } 
+void printNode(struct node* head) 
+{ struct node* h = head; 
+ while(h!=NULL) 
+ { cout<<h->data<<" "; 
+ h=h->next; } } 
+int main()
+{ int num,data,i; 
+ cin>>num; 
+ struct node* head=NULL; 
+ for(i=0;i<num;i++) 
+ { cin>>data; 
+ insertAtBegin(data, &head); } 
+ printNode(head); } 
+14.Problem Statement: 
+Liam is learning about circular linked lists and wants to create a program to manage his list of  numbers. Can you help him by writing a program to add a new number to the beginning of his  circular linked list? 
+Sample test cases : 
+Input 1 : Output 1 : 
+5 12 82 12 22 23  
+23 22 12 82 12 99 12 82 12 22 23  
+99 
+#include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ node* left; 
+ node* right; }; 
+void insertAtBegin(int data, node** head, node** last) 
+{ struct node* h=*head; 
+ struct node* l=*last; 
+ struct node* newnode= new node(); 
+ newnode->data =data; 
+ newnode->left = NULL; 
+ newnode->right = NULL; 
+ if(*head==NULL) 
+ { *head= newnode; 
+ *last= newnode; } 
+else
+ { newnode->right= h; 
+ h->left=newnode; 
+ *head= newnode; } } 
+void printNode(node* head, node *last) 
+{ node* h=head; 
+ node* l=last; 
+ while(h!=l) 
+ { cout<<h->data <<" "; 
+ h=h->right; } 
+ cout<<h->data; } 
+int main() 
+{ int num,data,i; 
+ cin>>num; 
+ node* head=NULL; 
+ node* last=NULL; 
+ for(i=0;i<num;i++) 
+ { cin>>data; 
+ insertAtBegin(data,&head,&last); } 
+ printNode(head,last); 
+ cout<<endl; 
+ cin>>data; 
+ insertAtBegin(data,&head,&last); 
+ printNode(head,last); } 
+15.Problem statement 
+Books in a shelf are arranged in such a way that the starting letters of their titles are displayed in  front of it. Based upon these letters, students can easily identify the books they are in search of.  One fine day, some students find that the books are arranged in reversed order. However, they are  unable to understand the process behind the arrangement.One student suggested that since books  are usually arranged in the form of stacks, the reversal will be in the LIFO format. Another student  mentioned that first letters of the books formed an array of characters which is now seen in the  reversed form. Help the students by writing a code by combining the two given findings to arrive at  the algorithm for the rearrangement. 
+Sample test cases : 
+Input 1 : Output 1 : 
+JNCAB BACNJ
+Input 2 : Output 2 : DEFG CVDF FDVC GFED #include<bits/stdc++.h> 
+using namespace std; 
+int n,top=-1; 
+string letter[100]; 
+void push(char val) { 
+ top++; 
+ letter[top]=val; } 
+void display() { 
+ if(top>=0) { 
+ for(int i=top; i>=0; i--) 
+ cout<<letter[i]; } } 
+int main() { 
+ string str; 
+ char val; 
+ getline(cin,str); 
+ for(int i=0;i<str.length();i++){ 
+ val=str[i]; 
+ push(val); } 
+ display(); } 
+16. 
+Sample 1 Input Sample 1 Output 
+2 Element deleted from queue is : 12 12 Queue is : 13 
+13 
+1 
+Sample 2 Input 
+5 
+12 
+13 
+14
+15 
+16 
+4 
+Sample 2 Output 
+Element deleted from queue is : 12 
+Element deleted from queue is : 13 
+Element deleted from queue is : 14 
+Element deleted from queue is : 15 
+Queue is : 16 
+#include<bits/stdc++.h> 
+using namespace std; 
+int f=-1,r=-1; 
+#define max 100 
+int q[max]; 
+void enque(int num) 
+{ f=0; 
+r++; 
+q[r]=num; } 
+void deque1() 
+{ cout<<"Element deleted from queue is : "<<q[f]<<endl; for(int i=f;i<r;i++) 
+{ q[i]=q[i+1]; } 
+r--; } 
+void display() 
+{ for(int i=f;i<=r;i++) 
+{ cout<<q[i]<<" "; } } 
+int main() 
+{ int n; 
+cin>>n; 
+for(int i=0;i<n;i++) 
+{ int num;
+cin>>num; 
+enque(num); } 
+int m; 
+cin>>m; 
+for(int i=0;i<m;i++) 
+deque1(); 
+cout<<"Queue is :\n"; 
+display(); } 
+17.Ramu want to implement a fixed size queue of maximum size 5 using an array. His friend Priya  has typed some code and asked Ramu to complete the missing code to implement. Help Ramu by  writing suitable functions to do the basic queue operations.Structure declaration and main  fucntions are already implemented. Write the suitable code for functions only. 
+Input 1 : 
+140 
+255 
+145 
+985 
+215 
+Output 1 : 
+140 255 145 985 215  
+145 985 215  
+Queue is empty 
+#include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ node* next; }; 
+void insertAtEnd(int data, struct node** head) 
+{ struct node* h=*head; 
+ struct node* newnode= new node(); 
+ newnode->data=data; 
+ newnode->next=NULL; 
+ if(*head==NULL) 
+ *head=newnode;
+ else 
+ { while(h->next!=NULL) 
+ h=h->next; 
+ h->next=newnode; } } 
+void printNode(struct node* head) 
+{ struct node* h=head; 
+ while(h!=NULL) 
+ { cout<<h->data<<" "; 
+ h=h->next; } 
+ cout<<endl; } 
+void dequeue(struct node** head) 
+{ struct node* h= *head; 
+ struct node* temp =*head; 
+ h= h->next; 
+ *head = h; 
+ delete(temp); } 
+int main() 
+{ int num=5,data,i; 
+ node* head=NULL; 
+ for(i=0;i<num;i++) 
+ { cin>>data; 
+ insertAtEnd(data,&head); } 
+ printNode(head); 
+ for(i=0;i<2;i++) 
+ dequeue(&head); 
+ printNode(head); 
+ cout<<"Queue is empty"; } 
+18. Write a program to display the elements of tree in the preorder traversal. Sample test cases : 
+Input 1 : 
+6 
+3
+1 
+4 
+2 
+-1 
+Output 1 : 
+Preorder Traversal: 
+6 3 1 2 4  
+Input 2 : 
+6 
+3 
+1 
+4 
+2 
+9 
+7 
+8 
+10 
+-1 
+Output 2 : 
+Preorder Traversal: 
+6 3 1 2 4 9 7 8 10  
+#include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ node* left; 
+ node *right; }; 
+void insertNode(int data, node** root) { node* r=*root; 
+ node* newnode=new node();  newnode->data =data; 
+ newnode->left=NULL;
+ newnode->right=NULL; 
+ if(*root==NULL) 
+ *root=newnode; 
+else 
+ { if(data < r->data) 
+ { if(r->left==NULL) 
+ r->left=newnode; 
+ insertNode(data , &r->left); } 
+ else if(data > r->data) 
+ { if(r->right==NULL) 
+ r->right=newnode; 
+ insertNode(data, &r->right); } } } 
+void printnode(node* root) 
+{ if(root!=NULL) 
+ { cout<<root->data<<" "; 
+ printnode(root->left); 
+ printnode(root->right); } } 
+int main() 
+{ int data; 
+ node* root=NULL; 
+ while(1) 
+ { cin>>data; 
+ if(data<0)  
+ break; 
+ insertNode(data,&root); } 
+ cout<<"Preorder Traversal:"<<endl; 
+ printnode(root); } 
+19.Write a program to display the elements of trees in the inorder traversal. Sample test cases : 
+Input 1 : 
+6 
+3
+1 
+4 
+2 
+10 
+9 
+7 
+8 
+-1 
+Output 1 : 
+Inorder Traversal: 
+1 2 3 4 6 7 8 9 10  
+Input 2 : 
+6 
+3 
+1 
+4 
+2 
+-1 
+Output 2 : 
+Inorder Traversal: 
+1 2 3 4 6  
+#include<iostream> 
+using namespace std; 
+struct node 
+{ int data; 
+ node* left; 
+ node *right; }; 
+void insertNode(int data, node** root) { node* r=*root; 
+ node* newnode=new node();  newnode->data =data; 
+ newnode->left=NULL;
+ newnode->right=NULL; 
+ if(*root==NULL) 
+ *root=newnode; 
+else 
+ { if(data < r->data) 
+ { if(r->left==NULL) 
+ r->left=newnode; 
+ insertNode(data , &r->left); } 
+ else if(data > r->data) 
+ { if(r->right==NULL) 
+ r->right=newnode; 
+ insertNode(data, &r->right); } } } 
+void printnode(node* root) 
+{ if(root!=NULL) 
+ { printnode(root->left); 
+ cout<<root->data<<" "; 
+ printnode(root->right); } } 
+int main() 
+{ int data; 
+ node* root=NULL; 
+ while(1) 
+ { cin>>data; 
+ if(data<0)  
+ break; 
+ insertNode(data,&root); } 
+ cout<<"Inorder Traversal:"<<endl; 
+ printnode(root); } 
+20. Write a program to represent a graph using the adjacency list. Sample test cases : 
+Input 1 : 
+6 
+4
+1 2 
+2 3 
+3 4 
+2 4 
+Output 1 : 
+0 
+1 -> 2 
+2 -> 1 -> 3 -> 4 
+3 -> 2 -> 4 
+4 -> 3 -> 2 
+5 
+Input 2 : 
+6 
+5 
+1 2 
+2 3 
+3 4 
+2 4 
+0 5 
+Output 2 : 
+0 -> 5 
+1 -> 2 
+2 -> 1 -> 3 -> 4 
+3 -> 2 -> 4 
+4 -> 3 -> 2 
+5 -> 0 
+#include<iostream> #include<vector> using namespace std; int main() 
+{ int v,e,i,j,v1,v2;  cin>>v>>e;
+ vector<int>ver[v]; 
+ for(i=0;i<e;i++) 
+ { cin>>v1>>v2; 
+ ver[v1].push_back(v2);  ver[v2].push_back(v1); }  for(i=0;i<v;i++) 
+ { if(ver[i].size()==0) 
+ cout<<i; 
+ else 
+ { cout<<i<<" -> ";  for(j=0;j<ver[i].size()-1;j++)  cout<<ver[i][j]<<" -> ";  cout<<ver[i][j]; } 
+ cout<<endl; } }
