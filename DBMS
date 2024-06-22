@@ -1,0 +1,430 @@
+1)create table MarketingProjects(
+ProjectID int,
+ProjectName varchar(255),
+Budget varchar(20)
+);
+alter table MarketingProjects add column(Status varchar(20));
+insert into MarketingProjects values(
+1,
+'Project A',
+'50000.00',
+'null'
+);
+insert into MarketingProjects values(
+2,
+'Project B',
+'75000.00',
+'null'
+);
+insert into MarketingProjects values(
+3,
+'Project C',
+'100000.00',
+'null'
+);
+select * from MarketingProjects;
+
+2) create table Employees
+( ID int,
+Name varchar(255),
+Age int
+);
+3) alter table products modify column price decimal(10,2);
+select *from products;
+
+4) alter table contacts drop column phone_number;
+select * from contacts;
+
+5) select name,commission from salesman;
+
+6) delete from order_details where order_date < '2020-01-01';
+
+7) select * from emp_details where EMP_DEPT=57;
+
+8) select num1,num2,(num1+num2) as AdditionResult from Calculations;
+
+9) SELECT name, price FROM product_data ORDER BY price DESC LIMIT 5;
+
+10) CREATE TABLE Accounts (
+AccountID INT PRIMARY KEY,
+AccountName VARCHAR(100),
+Balance DECIMAL(10, 2)
+);
+INSERT INTO Accounts (AccountID, AccountName, Balance) VALUES
+(123, 'Account A', 1000.00),
+(456, 'Account B', 2000.00);
+START TRANSACTION;
+UPDATE Accounts
+SET Balance = Balance - 500
+WHERE AccountID = 123;
+UPDATE Accounts
+SET Balance = Balance + 500
+WHERE AccountID = 456;
+COMMIT;
+SELECT * FROM Accounts;
+
+11) start transaction;
+create table Accounts (AccountID int, AccountName varchar(225),Balance varchar(230));
+Insert into Accounts values(1, 'Savings',5000.00);
+insert into Accounts values (2, 'Checking', 2500.88);
+insert into Accounts values (3, 'Investment',10000.00);
+select from Accounts;
+commit
+
+12) start transaction;
+update Books set Quantity=28 where BookID=1;
+update Books set LastUpdated='2024-04-15 09:02:00' where BookID=1;
+select * from Books where BookID=1;
+commit
+
+13) create table students(ID int, Name varchar(20),Marks Int,department_id varchar(20));
+insert into students value(1,'John Doe',90,null);
+insert into students value(2,'Jane Smith',85,null);
+insert into students value(3,'Michael Johnson',65,null);
+insert into students value(4,'Emily Davis',88,null);
+select * from students;
+
+14) create table Employees(EmployeeID int primary key,Name varchar(225),
+DepartmentID int,EmergencyContactName varchar(255),EmergencyContactPhone varchar(20));
+
+15) select case when exists(select 1 from Purchases where PurchaseDate >=
+date_sub(current_date(),interval 30 day))
+then 'Yes'
+else 'No'
+end as Purchases_Last_30_Days
+
+16) select * from products p1 where p1.product_id not in(select s.product_id from sales s);
+select name,price from products where category='Electronics'union
+select name,price from products where category='Books';
+select product_id,name,round(price,0)as rounded_price from products where
+category='Electronics' and price>any(select price from products where category='Books')
+
+17) select order_status,count(*) as total_orders from
+orders group by order_status order by order_status;
+
+18) set @ri:=-1;
+select category,avg(price) as median_price from (
+select @ri:=if(@pg=Market.category,@ri+1,0) as ri,
+@pg:=Market.category as category,
+Market.price as price from Market order by Market.price,
+Market.category) as p
+where p.ri in(floor(@ri/2),ceil(@ri/2))
+group by category
+order by category;
+
+19) SELECT DISTINCT Name FROM Actors WHERE ActorID IN ( SELECT ActorID FROM Cast WHERE
+MovieID IN ( SELECT MovieID FROM Movies WHERE DirectorID = ( SELECT DirectorID FROM
+Directors WHERE Name = 'Christopher Nolan' ) ));
+
+20) create table Product(product_id int,sale_Amount
+varchar(20)); insert into Product values(103,3500.00);
+select(select product_id from Product where product_id=103)as top_selling_product,
+(select sale_amount from Product where product_id=103)as total_sales_amount from Product;
+
+21) select product_id from sales_2021 where product_id in(select product_id from sales_2020);
+22) create table customer_information(customer_id int,name
+varchar(255),email varchar(255),phone_number
+varchar(255),address varchar(255));
+create table product_data(product_id int,name varchar(255),description varchar(255),price
+decimal(20,2),category_id int);
+create table order_details(order_id int,customer_id int,product_id int,quantity int,order_date
+date);
+
+23) select Students.FirstName,Courses.CourseName from Students inner join
+Courses On Students.CourseId=Courses.CourseID
+where Students.Grade='A';
+
+24) select Employees.FirstName,Department.DepartmentName from Employees join
+Department on Employees.DeptID=Department.DeptID;
+
+25) select DeliveryRatings.DeliveryBoyName,
+avg(DeliveryRatings.rating)as AverageRating
+from DeliveryRatings group by DeliveryRatings.DeliveryBoyName;
+
+26) select * from BugReports
+where ReportedBugs = (select MAX(ReportedBugs) from BugReports);
+
+27) select Procedures.ProcedureType,
+min(Surgery.SurgeryDuration) as
+MinDuration,
+max(Surgery.SurgeryDuration) as
+MaxDuration from Procedures
+join Surgery on Procedures.ProcedureID=
+Surgery.ProcedureID
+group by
+ProcedureType;
+28) SELECT c.CustomerID, c.CustomerName, COUNT(b.BookingID) AS TotalBookings FROM Customer c
+JOIN Booking b ON c.CustomerID = b.CustomerID GROUP BY c.CustomerID, c.CustomerName;
+
+29) CREATE VIEW EmployeeSalary AS SELECT EmployeeID, FirstName, LastName, Salary FROM
+Employees; UPDATE EmployeeSalary SET Salary = 65000 WHERE EmployeeID = 1; SELECT FirstName,
+LastName, Salary FROM EmployeeSalary;
+
+30) CREATE VIEW EmployeeSalary AS SELECT EmployeeID, FirstName, LastName, Salary FROM
+Employees; UPDATE EmployeeSalary SET Salary = 65000 WHERE EmployeeID = 1; SELECT FirstName,
+LastName, Salary FROM EmployeeSalary;
+
+31) -- Declare cursor
+DECLARE employee_cursor CURSOR FOR
+SELECT name, salary FROM employees;
+OPEN employee_cursor;
+-- Variables to store fetched data
+DECLARE employee_name TEXT;
+DECLARE employee_salary NUMERIC;
+LOOP
+FETCH employee_cursor INTO employee_name, employee_salary;
+-- Exit loop if no more rows
+EXIT WHEN NOT FOUND;
+RAISE NOTICE 'Employee: %, Salary: %', employee_name, employee_salary;
+END LOOP;
+CLOSE employee_cursor;
+
+32) CREATE TRIGGER update_salary_trigger
+BEFORE UPDATE ON employee
+FOR EACH ROW
+SET NEW.last_salary_updated := CURRENT_DATE
+
+33) CREATE TABLE Programs (
+ProgramID INT PRIMARY KEY,
+Title VARCHAR(100),
+Description TEXT
+);
+CREATE TABLE Trainees (
+TraineeID INT PRIMARY KEY,
+FirstName VARCHAR(100),
+LastName VARCHAR(100),
+Email VARCHAR(100),
+ProgramID INT,
+FOREIGN KEY (ProgramID) REFERENCES Programs(ProgramID)
+);
+INSERT INTO Programs (ProgramID, Title, Description) VALUES
+(1, 'Web Development', 'Learn to build websites using HTML, CSS, and JavaScrip(2, 'Data Analysis',
+'Learn how to analyze data using Python and SQL.');
+INSERT INTO Trainees (TraineeID, FirstName, LastName, Email, ProgramID) VALUES(1, 'Alice',
+'Johnson', 'alice.johnson@example.com', 1),
+(2, 'Bob', 'Brown', 'bob.brown@example.com', 2);
+DELETE FROM Trainees WHERE TraineeID = 2;
+SELECT
+t.FirstName AS "First Name",
+t.LastName AS "Last Name",
+t.Email AS "Email",
+p.Title AS "Program"
+FROM
+Trainees t
+JOIN
+Programs p ON t.ProgramID = p.ProgramID
+
+34) CREATE TABLE EmployeeWorkLogs (
+EmployeeID INT,
+Date DATE,
+RegularHours INT,
+OvertimeHours INT
+);
+INSERT INTO EmployeeWorkLogs (EmployeeID, Date, RegularHours, OvertimeHours)
+VALUES
+(101, '2024-05-01', 8, 2),
+(102, '2024-05-01', 8, 3),
+(103, '2024-05-01', 8, 1),
+(104, '2024-05-02', 8, 2),
+(105, '2024-05-02', 8, 3),
+(106, '2024-05-02', 8, 1),
+(107, '2024-05-03', 8, 2),
+(108, '2024-05-03', 8, 3),
+(109, '2024-05-03', 8, 1),
+(110, '2024-05-04', 8, 2);
+SET @OvertimeRate = 20
+SELECT
+EmployeeID,
+CONCAT('$', OvertimeHours * @OvertimeRate) AS OvertimePay
+FROM
+EmployeeWorkLogs;
+
+35) CREATE TABLE Donors (
+DonorID INT PRIMARY KEY,
+FirstName VARCHAR(100),
+LastName VARCHAR(100),
+BloodType VARCHAR(5),
+ContactNumber VARCHAR(15)
+);
+CREATE TABLE Donations (
+DonationID INT PRIMARY KEY,
+DonorID INT,
+DonationDate DATE,
+AmountDonated INT, -- in milliliters
+FOREIGN KEY (DonorID) REFERENCES Donors(DonorID)
+);
+-- Inserting data into Donors
+INSERT INTO Donors (DonorID, FirstName, LastName, BloodType, ContactNumber) VA(1, 'John',
+'Doe', 'O+', '123-456-7890'),
+(2, 'Jane', 'Doe', 'A+', '987-654-3210');
+-- Inserting data into Donations
+INSERT INTO Donations (DonationID, DonorID, DonationDate, AmountDonated) VALUE(1, 1,
+'2024-04-01', 500),
+(2, 2, '2024-04-02', 450);
+DELETE FROM Donations WHERE DonorID = 1;
+DELETE FROM Donors WHERE DonorID = 1;
+UPDATE Donors
+SET ContactNumber = '555-123-4567'
+WHERE DonorID = 2;
+SELECT
+d.FirstName AS 'First Name',
+d.LastName AS 'Last Name',
+d.BloodType AS 'Blood Type',
+don.DonationDate AS 'Donation Date',
+don.AmountDonated AS 'Amount Donated'
+FROM Donors d
+JOIN Donations don ON d.DonorID = don.DonorID;
+
+36) CREATE TABLE EmployeeLeaveBalances (
+EmployeeID INT PRIMARY KEY,
+LeaveType VARCHAR(50),
+LeaveAccrued INT,
+LeaveTaken INT
+);
+INSERT INTO EmployeeLeaveBalances (EmployeeID, LeaveType, LeaveAccrued, LeaveTVALUES
+(001, 'Annual', 20, 5),
+(002, 'Sick', 15, 3),
+(003, 'Annual', 18, 4),
+(004, 'Personal', 10, 2),
+(005, 'Annual', 22, 6);
+CREATE TABLE VerifiedLeaveBalances (
+EmployeeID INT PRIMARY KEY,
+LeaveType VARCHAR(50),
+VerifiedLeaveBalance INT
+);
+-- Calculate verified leave balances and insert into the VerifiedLeaveBalancesINSERT INTO
+VerifiedLeaveBalances (EmployeeID, LeaveType, VerifiedLeaveBalanceSELECT EmployeeID,
+LeaveType, (LeaveAccrued - LeaveTaken) AS VerifiedLeaveBalaFROM EmployeeLeaveBalances;
+SELECT * FROM VerifiedLeaveBalances
+
+8)
+ i)
+create table sak(
+First Name varchar(12),
+Last Name varchar(12),
+Email varchar(200),
+Program varchar(89)
+);
+insert into sak
+values('Alice','Johnson','alice.johnson@example.com','Web Development');
+select*from sak;
+
+2)
+create table sak(
+EmployeeID int,
+OvertimePay varchar(50)
+);
+insert into sak
+values
+(101,'$40'),
+(102,'$60'),
+(103,'$20'),
+(104,'$40'),
+(105,'$60'),
+(106,'$20'),
+(107,'$40'),
+(108,'$60'),
+(109,'$20'),
+(110,'$40');
+select*from sak;
+
+3)
+create table sak(
+First Name varchar(42),
+Last Name varchar(56),
+Blood Type varchar(55),
+Donation Date varchar(55),
+Amount Donated varchar(55)
+);
+insert into sak
+values
+('Jane','Doe','A+','2024-04-02',450);
+select*from sak;
+
+
+6))1)
+create view EmployeeDetails as
+select EmployeeID,FirstName,LastName from Employees;
+select*from EmployeeDetails;
+
+
+6))2)
+create view EmployeeSalary as
+select EmployeeID,FirstName,LastName,Salary from Employees;
+update EmployeeSalary set Salary=65000 where EmployeeID=1;
+select FirstName,LastName,Salary from EmployeeSalary;
+
+
+18. alter table products modify column price double;
+select category, avg(price) as median_price
+from(select p1.category,p1.price,(select count(*)
+from products p2
+where p2.category=p1.category 
+and p2.price<=p1.price)
+as price_rank,
+(
+select count(*)
+from products p3 where p3.category=p1.category)
+as total_rows from products p1)
+as ranked_products 
+where price_rank between total_rows /2 and
+(total_rows/2)+1 group by category 
+order by category;
+
+
+
+
+
+
+
+41)create table Intersection(
+    IntersectionID int primary key,
+    Location varchar(255)
+);
+
+insert into Intersection values
+(1,'1st Ave & Main St'),
+(2,'2nd Ave & Main St');
+
+create table TrafficLights(
+    LightID int primary key,
+    IntersectionID int,
+    Status varchar(255),
+    LastServiceDate date
+);
+
+insert into TrafficLights values
+(101,1,'Operational','2023-01-10'),
+(102,1,'Non-Operational','2023-03-15'),
+(201,2,'Operational','2023-02-20');
+
+create table MaintenanceLogs(
+    LogID int primary key,
+    LightID int,
+    ServiceDate date,
+    Details varchar(255)
+);
+
+insert into MaintenanceLogs values
+(1,101,'2023-01-10','Routine Check'),
+(2,102,'2023-03-15','Replaced unit');
+
+create table IncidentReports(
+    ReportID int primary key,
+    LightID int,
+    ReportDate date,
+    IncidentDescription varchar(255)
+);
+
+insert into IncidentReports values
+(1,102,'2023-03-16','Failure led to minor accident');
+
+select i.Location,t.LightID,t.Status from Intersection i 
+join TrafficLights t on i.IntersectionID=t.IntersectionID 
+where t.Status='Non-Operational';
+
+select i.Location,count(ir.ReportID) as 'NumberOfIncidents' from Intersection i
+join IncidentReports ir on i.IntersectionID=ir.ReportID group by ir.ReportID;
+
+select t.LightID,i.Location,t.LastServiceDate,Date_ADD(LastServiceDate,interval 6 month) as 'NextServiceDue'
+from TrafficLights t join Intersection i on t.IntersectionID=i.IntersectionID where i.IntersectionID=1 order by t.LightID desc limit 2;
